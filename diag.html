@@ -3,20 +3,24 @@
 <head>
   <meta charset="UTF-8" />
   <title>Druzhba Diagnostics</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1>Druzhba Diagnostics</h1>
-  <div id="output"></div>
+  <div class="window">
+    <h1>Druzhba Diagnostics</h1>
+    <div id="output"></div>
+    <button class="logout" onclick="logout()">Logout</button>
+  </div>
 
   <script>
+    const API = 'https://druzhba.duckdns.org:8080';
     const token = localStorage.getItem('token');
     const username = localStorage.getItem('username');
-    if (!token || username !== 'Druzhba') {
-      window.location.href = 'index.html';
-    }
+
+    if (!token || username !== 'Druzhba') window.location.href = 'index.html';
 
     async function loadDiagnostics() {
-      const res = await fetch('https://druzhba.duckdns.org:8080/files/diagnostics', {
+      const res = await fetch(`${API}/files/diagnostics`, {
         headers: { Authorization: token }
       });
       const data = await res.json();
@@ -25,13 +29,18 @@
         <p><strong>Files:</strong> ${data.fileCount}</p>
         <p><strong>Total Bytes:</strong> ${data.totalBytes}</p>
         ${data.files.map(f => `
-          <div>
+          <div class="file">
             <strong>${f.filename}</strong><br>
             Size: ${f.size} bytes<br>
             Uploaded: ${new Date(f.uploadedAt).toLocaleString()}
           </div>
         `).join('')}
       `;
+    }
+
+    function logout() {
+      localStorage.clear();
+      window.location.href = 'index.html';
     }
 
     loadDiagnostics();
