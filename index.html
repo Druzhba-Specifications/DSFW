@@ -2,80 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>DSFW Login & Register</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(to right, #1e3c72, #2a5298);
-      color: #fff;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      margin: 0;
-    }
-
-    .container {
-      background: rgba(255, 255, 255, 0.1);
-      padding: 2rem;
-      border-radius: 12px;
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
-      width: 100%;
-      max-width: 400px;
-      backdrop-filter: blur(10px);
-    }
-
-    h1 {
-      text-align: center;
-      margin-bottom: 1rem;
-      font-size: 2rem;
-    }
-
-    h2 {
-      margin-top: 2rem;
-      font-size: 1.2rem;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-      padding-bottom: 0.5rem;
-    }
-
-    input {
-      width: 100%;
-      padding: 0.75rem;
-      margin: 0.5rem 0;
-      border: none;
-      border-radius: 6px;
-      font-size: 1rem;
-    }
-
-    button {
-      width: 100%;
-      padding: 0.75rem;
-      margin-top: 0.5rem;
-      background-color: #00c6ff;
-      border: none;
-      border-radius: 6px;
-      font-size: 1rem;
-      color: #fff;
-      cursor: pointer;
-      transition: background 0.3s ease;
-    }
-
-    button:hover {
-      background-color: #0072ff;
-    }
-
-    #message {
-      margin-top: 1rem;
-      text-align: center;
-      color: #ffdddd;
-      font-weight: bold;
-    }
-  </style>
+  <title>DSFW Login</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="container">
+  <div class="window">
     <h1>Welcome to DSFW</h1>
 
     <h2>Login</h2>
@@ -121,11 +52,9 @@
         body: JSON.stringify({ username, password })
       });
       const text = await res.text();
-      if (res.ok) {
-        document.getElementById('message').textContent = 'Registration successful. You can now log in.';
-      } else {
-        document.getElementById('message').textContent = text;
-      }
+      document.getElementById('message').textContent = res.ok
+        ? 'Registration successful. You can now log in.'
+        : text;
     }
   </script>
 </body>
