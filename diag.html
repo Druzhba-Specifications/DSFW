@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Druzhba Diagnostics</title>
+</head>
+<body>
+  <h1>Druzhba Diagnostics</h1>
+  <div id="output"></div>
+
+  <script>
+    const token = localStorage.getItem('token');
+    const username = localStorage.getItem('username');
+    if (!token || username !== 'Druzhba') {
+      window.location.href = 'index.html';
+    }
+
+    async function loadDiagnostics() {
+      const res = await fetch('https://druzhba.duckdns.org:8080/files/diagnostics', {
+        headers: { Authorization: token }
+      });
+      const data = await res.json();
+      document.getElementById('output').innerHTML = `
+        <p><strong>User:</strong> ${data.user}</p>
+        <p><strong>Files:</strong> ${data.fileCount}</p>
+        <p><strong>Total Bytes:</strong> ${data.totalBytes}</p>
+        ${data.files.map(f => `
+          <div>
+            <strong>${f.filename}</strong><br>
+            Size: ${f.size} bytes<br>
+            Uploaded: ${new Date(f.uploadedAt).toLocaleString()}
+          </div>
+        `).join('')}
+      `;
+    }
+
+    loadDiagnostics();
+  </script>
+</body>
+</html>
